@@ -122,7 +122,10 @@ def _chunk_text(text: str, chunk_size: int = 30) -> Iterator[str]:
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    init_db()
+    try:
+        init_db()
+    except Exception:
+        pass
     yield
 
 
