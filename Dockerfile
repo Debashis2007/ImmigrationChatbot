@@ -10,7 +10,9 @@ RUN apt-get update && apt-get install -y \
 # Copy project files
 COPY pyproject.toml .
 COPY src/ src/
-COPY .env .env
+
+# Copy .env if it exists (optional for Railway)
+COPY .env* .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -e .
