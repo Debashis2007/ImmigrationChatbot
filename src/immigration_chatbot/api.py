@@ -143,25 +143,14 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    from fastapi.responses import FileResponse
-    import os
-    html_path = os.path.join(os.path.dirname(__file__), "static_frontend.html")
-    if os.path.exists(html_path):
-        return FileResponse(html_path, media_type="text/html")
-    return {"message": "Immigration Chatbot API"}
-
-@app.get("/{full_path:path}")
-async def catch_all(full_path: str):
-    """Serve frontend HTML for all unmatched routes."""
-    from fastapi.responses import FileResponse
-    import os
-    # Don't intercept API routes
-    if full_path.startswith("api/") or full_path.startswith("docs") or full_path.startswith("openapi"):
-        raise HTTPException(status_code=404)
-    html_path = os.path.join(os.path.dirname(__file__), "static_frontend.html")
-    if os.path.exists(html_path):
-        return FileResponse(html_path, media_type="text/html")
-    raise HTTPException(status_code=404)
+    return {
+        "message": "Immigration Chatbot API",
+        "endpoints": {
+            "health": "/health",
+            "chat": "/api/chat",
+            "docs": "/docs"
+        }
+    }
 
 
 @app.get("/health")
