@@ -141,6 +141,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Serve static files (frontend)
+public_path = os.path.join(os.path.dirname(__file__), "../../public")
+if os.path.exists(public_path):
+    app.mount("/", StaticFiles(directory=public_path, html=True), name="static")
+
+
 @app.get("/")
 async def root():
     return {
