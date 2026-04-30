@@ -141,14 +141,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve static files (frontend)
-public_path = os.path.join(os.path.dirname(__file__), "../../public")
-if os.path.exists(public_path):
-    app.mount("/", StaticFiles(directory=public_path, html=True), name="static")
-
 
 @app.get("/")
 async def root():
+    from fastapi.responses import FileResponse
+    html_path = os.path.join(os.path.dirname(__file__), "../../public/index.html")
+    if os.path.exists(html_path):
+        return FileResponse(html_path, media_type="text/html")
     return {
         "message": "Immigration Chatbot API",
         "endpoints": {
