@@ -142,6 +142,26 @@ app.add_middleware(
 )
 
 
+
+
+# PWA manifest
+@app.get("/manifest.json", include_in_schema=False)
+async def manifest():
+    from fastapi.responses import FileResponse
+    manifest_path = os.path.join(os.path.dirname(__file__), "../../public/manifest.json")
+    if os.path.exists(manifest_path):
+        return FileResponse(manifest_path, media_type="application/json")
+    return {"error": "Not found"}
+
+# Service worker
+@app.get("/sw.js", include_in_schema=False)
+async def service_worker():
+    from fastapi.responses import FileResponse
+    sw_path = os.path.join(os.path.dirname(__file__), "../../public/sw.js")
+    if os.path.exists(sw_path):
+        return FileResponse(sw_path, media_type="application/javascript")
+    return {"error": "Not found"}
+
 @app.get("/")
 async def root():
     from fastapi.responses import FileResponse
