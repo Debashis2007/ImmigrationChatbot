@@ -157,6 +157,13 @@ async def root():
         }
     }
 
+# Mount static files (after routes so they don't interfere)
+public_path = os.path.join(os.path.dirname(__file__), "../../public")
+if os.path.exists(public_path):
+    from fastapi.staticfiles import StaticFiles
+    # Mount static files but NOT at root (use /static)
+    app.mount("/static", StaticFiles(directory=public_path), name="public")
+
 
 @app.get("/health")
 def health() -> dict[str, str]:
