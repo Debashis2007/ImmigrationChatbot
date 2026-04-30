@@ -175,6 +175,17 @@ def fallback_chat_response(message: str) -> str:
             "I can draft a clear message for recruiter, employer, or institution. "
             "Tell me audience, role, visa requirement, and preferred work arrangement."
         )
+    if any(word in text for word in ["lca", "labor condition", "labor condition application"]):
+        from .knowledge import VISA_TIMELINES
+        lca_info = VISA_TIMELINES.get("Labor Condition Application (LCA)", {})
+        timeline = lca_info.get("Processing Time", "3-7 business days")
+        return (
+            f"LCA (Labor Condition Application) typically takes {timeline}. "
+            f"It's the first step for H1B sponsorship. "
+            f"Common issues: delays due to incomplete documentation or DOL clarifications. "
+            f"Backlogs vary by fiscal year. Would you like specific guidance on your timeline?"
+        )
+    
     return (
         "I can help with three things: timeline uncertainty, conflicting information, "
         "and communication drafts. Tell me which one you want to tackle first."
